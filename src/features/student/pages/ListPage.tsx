@@ -4,8 +4,10 @@ import studentApi from 'api/studentApi'
 import { useAppDispatch, useAppSelector } from 'app/hooks'
 import { selectCityList, selectCityMap } from 'features/city/citySlice'
 import { ListParams, Student } from 'models'
-import React, { useEffect } from 'react'
-import { Link, useHistory, useRouteMatch } from 'react-router-dom'
+import queryString from 'query-string'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import StudentFilter from '../components/StudentFilter'
 import StudentTable from '../components/StudentTable'
@@ -39,9 +41,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function ListPage() {
+export interface ListPageProps {
+    checked?: boolean
+}
+
+export default function ListPage({ checked }: ListPageProps) {
     const match = useRouteMatch()
     const history = useHistory()
+    const location = useLocation()
+    const queryParams = queryString.parse(location.search)
+    const dispatch = useAppDispatch()
+    const classes = useStyles()
+    const { t } = useTranslation()
 
     const studentList = useAppSelector(selectStudentList)
     const pagination = useAppSelector(selectStudentPagination)
@@ -49,28 +60,42 @@ export default function ListPage() {
     const loading = useAppSelector(selectStudentLoading)
     const cityMap = useAppSelector(selectCityMap)
     const cityList = useAppSelector(selectCityList)
-
-    const dispatch = useAppDispatch()
-    const classes = useStyles()
+    const [filters, setFilters] = useState(() => ({
+        ...queryParams,
+        _page: Number.parseInt(queryParams._page as string) || 1,
+        _limit: Number.parseInt(queryParams._limit as string) || 15,
+    }))
 
     useEffect(() => {
-        dispatch(studentActions.fetchStudentList(filter))
-    }, [dispatch, filter])
+        history.push({
+            pathname: history.location.pathname,
+            search: queryString.stringify(filters),
+        })
+    }, [history, filters])
+
+    useEffect(() => {
+        dispatch(studentActions.fetchStudentList(filters))
+    }, [dispatch, filters])
 
     const handlePageChange = (e: any, page: number) => {
-        dispatch(
-            studentActions.setFilter({
-                ...filter,
-                _page: page,
-            })
-        )
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            _page: page,
+        }))
     }
 
     const handleSearchChange = (newFilter: ListParams) => {
-        dispatch(studentActions.setFilterWithDebounce(newFilter))
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            ...newFilter,
+        }))
     }
 
     const handleFilterChange = (newFilter: ListParams) => {
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            ...newFilter,
+        }))
         dispatch(studentActions.setFilter(newFilter))
     }
 
@@ -82,7 +107,7 @@ export default function ListPage() {
             toast.success('Remove student successfully!')
 
             // Trigger to re-fetch student list with current filter
-            const newFilter = { ...filter }
+            const newFilter = { ...filters }
             dispatch(studentActions.setFilter(newFilter))
         } catch (error) {
             console.log('Failed to fetch student', error)
@@ -98,16 +123,19 @@ export default function ListPage() {
             {loading && <LinearProgress className={classes.loading} />}
 
             <Box className={classes.titleContainer}>
-                <Typography variant="h4">Students</Typography>
+                <Typography variant="h4" style={{ color: checked ? '#fff' : '' }}>
+                    {t('student.students')}
+                </Typography>
                 <Link to={`${match.url}/add`} style={{ textDecoration: 'none' }}>
                     <Button variant="contained" color="primary">
-                        Add new student
+                        {t('student.addNewStudent')}
                     </Button>
                 </Link>
             </Box>
 
             <Box mb={3}>
                 <StudentFilter
+                    checked={checked}
                     filter={filter}
                     cityList={cityList}
                     onChange={handleFilterChange}
@@ -117,6 +145,7 @@ export default function ListPage() {
 
             {/* StudentTable */}
             <StudentTable
+                checked={checked}
                 studentList={studentList}
                 cityMap={cityMap}
                 onEdit={handleEditStudent}

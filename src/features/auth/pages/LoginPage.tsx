@@ -1,7 +1,12 @@
-import { Box, Button, CircularProgress, makeStyles, Paper, Typography } from '@material-ui/core'
-import { useAppDispatch, useAppSelector } from 'app/hooks'
+import { Box, makeStyles, Paper, Typography } from '@material-ui/core'
+import userApi from 'api/userApi'
+import { useAppDispatch } from 'app/hooks'
+import { useAuth } from 'hooks/useAuth'
+import { ListResponseUser } from 'models'
 import * as React from 'react'
-import { authActions } from '../authSlice'
+import { useHistory } from 'react-router-dom'
+import { authActions, LoginPayload } from '../authSlice'
+import LoginForm from '../components/LoginForm'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,28 +25,48 @@ const useStyles = makeStyles((theme) => ({
 export default function LoginPage() {
     const classes = useStyles()
     const dispatch = useAppDispatch()
-    const isLogging = useAppSelector((state) => state.auth.logging)
+    const auth = useAuth()
+    const history = useHistory()
 
-    const handleLoginClick = () => {
-        dispatch(
-            authActions.login({
-                username: '',
-                password: '',
-            })
-        )
+    const initialValues: LoginPayload = {
+        email: '',
+        password: '',
+    }
+
+    // Redux Saga
+    // const handleUserFormSubmit = async (formValues: LoginPayload) => {
+    //     await dispatch(
+    //         authActions.login({
+    //             email: formValues.email,
+    //             password: formValues.password,
+    //         })
+    //     )
+    // }
+
+    // Context
+    const handleUserFormSubmit = async (formValues: LoginPayload) => {
+        // call API
+        const response: ListResponseUser = await userApi.login(formValues)
+
+        // set login from data API
+        auth.handleLogin(response.data.user)
+
+        // set token from data API
+        localStorage.setItem('access_token', response.data.access_token)
+
+        // redirect to admin page
+        history.push('/admin/dashboard')
     }
 
     return (
         <div className={classes.root}>
             <Paper elevation={1} className={classes.box}>
                 <Typography variant="h5" component="h1">
-                    Student Management
+                    Sign In
                 </Typography>
 
-                <Box mt={4}>
-                    <Button fullWidth variant="contained" color="primary" onClick={handleLoginClick}>
-                        {isLogging && <CircularProgress size={20} color="secondary" />} &nbsp; Login
-                    </Button>
+                <Box>
+                    <LoginForm initialValues={initialValues} onSubmit={handleUserFormSubmit} />
                 </Box>
             </Paper>
         </div>

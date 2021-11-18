@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Alert } from '@material-ui/lab'
+import { useTranslation } from 'react-i18next'
 
 export interface StudentFormProps {
     initialValues?: Student
@@ -49,6 +50,7 @@ const schema = yup.object({
 export default function StudentForm({ initialValues, onSubmit }: StudentFormProps) {
     const cityOptions = useAppSelector(selectCityOptions)
     const [error, setError] = useState<string>('')
+    const { t } = useTranslation()
 
     const {
         control,
@@ -65,7 +67,7 @@ export default function StudentForm({ initialValues, onSubmit }: StudentFormProp
             setError('')
 
             await onSubmit?.(formValues)
-        } catch (error) {
+        } catch (error: any) {
             setError(error.message)
         }
     }
@@ -73,30 +75,30 @@ export default function StudentForm({ initialValues, onSubmit }: StudentFormProp
     return (
         <Box maxWidth={400}>
             <form onSubmit={handleSubmit(handleFormSubmit)}>
-                <InputField name="name" control={control} label="Full Name" />
+                <InputField name="name" control={control} label={t('student.fullName')} />
 
                 <RadioGroupField
                     name="gender"
                     control={control}
-                    label="Gender"
+                    label={t('student.gender')}
                     options={[
                         { label: 'Male', value: 'male' },
                         { label: 'Female', value: 'female' },
                     ]}
                 />
 
-                <InputField name="age" control={control} label="Age" type="number" />
-                <InputField name="mark" control={control} label="Mark" type="number" />
+                <InputField name="age" control={control} label={t('student.age')} type="number" />
+                <InputField name="mark" control={control} label={t('dashboard.mark')} type="number" />
 
                 {Array.isArray(cityOptions) && cityOptions.length > 0 && (
-                    <SelectField name="city" control={control} label="City" options={cityOptions} />
+                    <SelectField name="city" control={control} label={t('student.city')} options={cityOptions} />
                 )}
 
                 {error && <Alert severity="error">{error}</Alert>}
 
                 <Box mt={3}>
                     <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
-                        {isSubmitting && <CircularProgress size={16} />} &nbsp;Save
+                        {isSubmitting && <CircularProgress size={16} />} &nbsp;{t('student.save')}
                     </Button>
                 </Box>
             </form>

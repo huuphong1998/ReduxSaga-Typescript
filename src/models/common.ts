@@ -14,6 +14,7 @@ export interface ListParams {
     _limit?: number
     _sort?: string
     _order?: 'asc' | 'desc'
+    name_like?: string
 
     [key: string]: any
 }

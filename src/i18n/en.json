@@ -1,0 +1,45 @@
+{
+    "header": {
+        "language": "Language",
+        "studentManagement": "Student Management",
+        "logout": "Logout"
+    },
+    "sidebar": {
+        "dashboard": "Dashboard",
+        "student": "Student"
+    },
+    "dashboard": {
+        "male": "Male",
+        "female": "Female",
+        "mark": "Mark",
+        "allStudent": "All Student",
+        "highestMark": "Student with highest mark",
+        "lowestMark": "Student with lowest mark",
+        "name": "Name",
+        "rankingByCity": "Ranking By City"
+    },
+    "student": {
+        "students": "Students",
+        "addNewStudent": "Add New Student",
+        "search": "Search By Name",
+        "filter": "Filter By City",
+        "all": "All",
+        "sort": "Sort",
+        "noSort": "No Sort",
+        "nameAsc": "Name Asc",
+        "nameDesc": "Name Desc",
+        "markAsc": "Mark Asc",
+        "markDesc": "Mark Desc",
+        "clear": "Clear",
+        "gender": "Gender",
+        "city": "City",
+        "actions": "Actions",
+        "edit": "Edit",
+        "remove": "Remove",
+        "back": "Back to student list",
+        "updateStudent": "Update student info",
+        "fullName": "Full Name",
+        "age": "Age",
+        "save": "Save"
+    }
+}

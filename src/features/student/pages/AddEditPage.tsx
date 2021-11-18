@@ -3,12 +3,18 @@ import { ChevronLeft } from '@material-ui/icons'
 import studentApi from 'api/studentApi'
 import { Student } from 'models'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import StudentForm from '../components/StudentForm'
 
-export default function AddEditPage() {
+export interface AddEditPageProps {
+    checked?: boolean
+}
+
+export default function AddEditPage({ checked }: AddEditPageProps) {
     const history = useHistory()
+    const { t } = useTranslation()
 
     const { studentId } = useParams<{ studentId: string }>()
     const isEdit = Boolean(studentId)
@@ -51,12 +57,17 @@ export default function AddEditPage() {
     return (
         <Box>
             <Link to="/admin/students">
-                <Typography variant="caption" style={{ display: 'flex', alignItems: 'center' }}>
-                    <ChevronLeft /> &nbsp;Back to student list
+                <Typography
+                    variant="caption"
+                    style={{ display: 'flex', alignItems: 'center', color: checked ? '#fff' : '' }}
+                >
+                    <ChevronLeft /> &nbsp;{t('student.back')}
                 </Typography>
             </Link>
 
-            <Typography variant="h4">{isEdit ? 'Update student info' : 'Add new student'}</Typography>
+            <Typography variant="h4" style={{ color: checked ? '#fff' : '' }}>
+                {isEdit ? `${t('student.updateStudent')}` : `${t('student.addNewStudent')}`}
+            </Typography>
 
             {(!isEdit || Boolean(student)) && (
                 <Box mt={3}>

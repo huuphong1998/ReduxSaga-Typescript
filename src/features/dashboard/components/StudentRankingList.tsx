@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { Student } from 'models'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
     table: {},
@@ -18,6 +19,7 @@ export interface StudentRankingListProps {
 
 export default function StudentRankingList({ studentList }: StudentRankingListProps) {
     const classes = useStyles()
+    const { t } = useTranslation()
 
     return (
         <TableContainer>
@@ -25,8 +27,8 @@ export default function StudentRankingList({ studentList }: StudentRankingListPr
                 <TableHead>
                     <TableRow>
                         <TableCell align="center">#</TableCell>
-                        <TableCell align="left">Name</TableCell>
-                        <TableCell align="right">Mark</TableCell>
+                        <TableCell align="left">{t('dashboard.name')}</TableCell>
+                        <TableCell align="right">{t('dashboard.mark')}</TableCell>
                     </TableRow>
                 </TableHead>
 

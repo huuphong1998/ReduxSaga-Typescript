@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { User } from 'models/user'
+import { ListResponseUser } from 'models'
 
 export interface LoginPayload {
-    username: string
+    email: string
     password: string
 }
 
 export interface AuthState {
     isLoggedIn: boolean
     logging?: boolean
-    currentUser?: User
+    currentUser?: ListResponseUser
 }
 
 const initialState: AuthState = {
@@ -25,7 +25,7 @@ const authSlice = createSlice({
         login(state, action: PayloadAction<LoginPayload>) {
             state.logging = true
         },
-        loginSuccess(state, action: PayloadAction<User>) {
+        loginSuccess(state, action: PayloadAction<ListResponseUser>) {
             state.isLoggedIn = true
             state.logging = false
             state.currentUser = action.payload

@@ -13,6 +13,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { City, Student } from 'models'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { capitalizeString, getMarkColor } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
@@ -27,14 +28,16 @@ export interface StudentTabletProps {
     cityMap: {
         [key: string]: City
     }
+    checked?: boolean
     onEdit?: (student: Student) => void
     onRemove?: (student: Student) => void
 }
 
-export default function StudentTable({ studentList, cityMap, onEdit, onRemove }: StudentTabletProps) {
+export default function StudentTable({ studentList, cityMap, checked, onEdit, onRemove }: StudentTabletProps) {
     const classes = useStyles()
     const [open, setOpen] = useState(false)
     const [selectedStudent, setSelectedStudent] = useState<Student>()
+    const { t } = useTranslation()
 
     const handleClose = () => {
         setOpen(false)
@@ -57,11 +60,11 @@ export default function StudentTable({ studentList, cityMap, onEdit, onRemove }:
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Gender</TableCell>
-                            <TableCell>Mark</TableCell>
-                            <TableCell>City</TableCell>
-                            <TableCell align="right">Actions</TableCell>
+                            <TableCell>{t('dashboard.name')}</TableCell>
+                            <TableCell>{t('student.gender')}</TableCell>
+                            <TableCell>{t('dashboard.mark')}</TableCell>
+                            <TableCell>{t('student.city')}</TableCell>
+                            <TableCell align="right">{t('student.actions')}</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -81,14 +84,14 @@ export default function StudentTable({ studentList, cityMap, onEdit, onRemove }:
                                     <Button
                                         size="small"
                                         className={classes.edit}
-                                        color="primary"
+                                        color={checked ? 'secondary' : 'primary'}
                                         onClick={() => onEdit?.(student)}
                                     >
-                                        Edit
+                                        {t('student.edit')}
                                     </Button>
 
                                     <Button size="small" color="secondary" onClick={() => handleRemoveClick(student)}>
-                                        Remove
+                                        {t('student.remove')}
                                     </Button>
                                 </TableCell>
                             </TableRow>

@@ -1,0 +1,45 @@
+{
+    "header": {
+        "language": "Ngôn ngữ",
+        "studentManagement": "Quản lý sinh viên",
+        "logout": "Đăng xuất"
+    },
+    "sidebar": {
+        "dashboard": "Bảng điều khiển",
+        "student": "Sinh viên"
+    },
+    "dashboard": {
+        "male": "Nam",
+        "female": "Nữ",
+        "mark": "Điểm",
+        "allStudent": "Tất cả sinh viên",
+        "highestMark": "Sinh viên có điểm cao nhất",
+        "lowestMark": "Sinh viên có điểm thấp nhất",
+        "name": "Tên",
+        "rankingByCity": "Xếp hạng theo Thành phố"
+    },
+    "student": {
+        "students": "Sinh viên",
+        "addNewStudent": "Thêm sinh viên mới",
+        "search": "Tìm kiếm theo tên",
+        "filter": "Lọc theo thành phố",
+        "all": "Tất cả",
+        "sort": "Sắp xếp",
+        "noSort": "Không sắp xếp",
+        "nameAsc": "Tên tăng dần",
+        "nameDesc": "Tên giảm dần",
+        "markAsc": "Điểm tăng dần",
+        "markDesc": "Điểm giảm dần",
+        "clear": "Xóa",
+        "gender": "Giới tính",
+        "city": "Thành phố",
+        "actions": "Hành động",
+        "edit": "Chỉnh sửa",
+        "remove": "Xóa",
+        "back": "Trở lại danh sách sinh viên",
+        "updateStudent": "Cập nhật thông tin sinh viên",
+        "fullName": "Họ và tên",
+        "age": "Tuổi",
+        "save": "Lưu"
+    }
+}

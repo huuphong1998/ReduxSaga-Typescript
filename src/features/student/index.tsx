@@ -5,7 +5,11 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import AddEditPage from './pages/AddEditPage'
 import ListPage from './pages/ListPage'
 
-export default function StudentFeature() {
+export interface StudentFeatureProps {
+    checked?: boolean
+}
+
+export default function StudentFeature({ checked }: StudentFeatureProps) {
     const match = useRouteMatch()
     const dispatch = useAppDispatch()
 
@@ -16,11 +20,11 @@ export default function StudentFeature() {
     return (
         <Switch>
             <Route path={match.path} exact>
-                <ListPage />
+                <ListPage checked={checked} />
             </Route>
 
             <Route path={`${match.path}/add`}>
-                <AddEditPage />
+                <AddEditPage checked={checked} />
             </Route>
 
             <Route path={`${match.path}/:studentId`}>

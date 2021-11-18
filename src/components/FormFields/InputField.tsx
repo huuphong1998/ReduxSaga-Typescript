@@ -18,19 +18,21 @@ export function InputField({ name, control, label, ...inputProps }: InputFieldPr
     })
 
     return (
-        <TextField
-            fullWidth
-            size="small"
-            margin="normal"
-            value={value}
-            onChange={onChange}
-            onBlur={onBlur}
-            label={label}
-            variant="outlined"
-            inputRef={ref}
-            error={invalid}
-            helperText={error?.message}
-            inputProps={inputProps}
-        />
+        <>
+            <TextField
+                fullWidth
+                size="small"
+                margin="normal"
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                label={label}
+                variant="outlined"
+                inputRef={ref}
+                error={invalid}
+                helperText={error?.message}
+                inputProps={inputProps}
+            />
+        </>
     )
 }

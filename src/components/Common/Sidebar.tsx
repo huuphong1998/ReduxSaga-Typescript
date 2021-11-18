@@ -5,6 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { makeStyles } from '@material-ui/core/styles'
 import { Dashboard, PeopleAlt } from '@material-ui/icons'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
@@ -24,8 +25,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export function Sidebar() {
+export interface SidebarProps {
+    checked?: boolean
+}
+
+export function Sidebar({ checked }: SidebarProps) {
     const classes = useStyles()
+    const { t } = useTranslation()
 
     return (
         <div className={classes.root}>
@@ -35,7 +41,7 @@ export function Sidebar() {
                         <ListItemIcon>
                             <Dashboard />
                         </ListItemIcon>
-                        <ListItemText primary="Dashboard" />
+                        <ListItemText primary={t('sidebar.dashboard')} style={{ color: checked ? '#fff' : '' }} />
                     </ListItem>
                 </NavLink>
 
@@ -44,7 +50,7 @@ export function Sidebar() {
                         <ListItemIcon>
                             <PeopleAlt />
                         </ListItemIcon>
-                        <ListItemText primary="Students" />
+                        <ListItemText primary={t('sidebar.student')} style={{ color: checked ? '#fff' : '' }} />
                     </ListItem>
                 </NavLink>
             </List>

@@ -2,6 +2,7 @@ import { Box, Grid, LinearProgress, makeStyles, Typography } from '@material-ui/
 import { ChatBubble, PeopleAlt } from '@material-ui/icons'
 import { useAppDispatch, useAppSelector } from 'app/hooks'
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import StatisticItem from './components/StatisticItem'
 import StudentRankingList from './components/StudentRankingList'
 import Widget from './components/Widget'
@@ -25,7 +26,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function Dashboard() {
+export interface DashboardProps {
+    checked?: boolean
+}
+
+export default function Dashboard({ checked }: DashboardProps) {
     const dispatch = useAppDispatch()
     const loading = useAppSelector(selectDashboardLoading)
     const statistics = useAppSelector(selectDashboardStatistics)
@@ -34,6 +39,7 @@ export default function Dashboard() {
     const rankingByCityList = useAppSelector(selectRankingByCityList)
 
     const classes = useStyles()
+    const { t } = useTranslation()
 
     useEffect(() => {
         dispatch(dashboardActions.fetchData())
@@ -49,7 +55,7 @@ export default function Dashboard() {
                 <Grid item xs={12} md={6} lg={3}>
                     <StatisticItem
                         icon={<PeopleAlt fontSize="large" color="primary" />}
-                        label="male"
+                        label={t('dashboard.male')}
                         value={statistics.maleCount}
                     />
                 </Grid>
@@ -57,7 +63,7 @@ export default function Dashboard() {
                 <Grid item xs={12} md={6} lg={3}>
                     <StatisticItem
                         icon={<PeopleAlt fontSize="large" color="primary" />}
-                        label="female"
+                        label={t('dashboard.female')}
                         value={statistics.femaleCount}
                     />
                 </Grid>
@@ -65,7 +71,7 @@ export default function Dashboard() {
                 <Grid item xs={12} md={6} lg={3}>
                     <StatisticItem
                         icon={<ChatBubble fontSize="large" color="primary" />}
-                        label="mark >= 8"
+                        label={`${t('dashboard.mark')} >= 8`}
                         value={statistics.highMarkCount}
                     />
                 </Grid>
@@ -73,7 +79,7 @@ export default function Dashboard() {
                 <Grid item xs={12} md={6} lg={3}>
                     <StatisticItem
                         icon={<ChatBubble fontSize="large" color="primary" />}
-                        label="mark <= 5"
+                        label={`${t('dashboard.mark')} <= 5`}
                         value={statistics.lowMarkCount}
                     />
                 </Grid>
@@ -81,18 +87,20 @@ export default function Dashboard() {
 
             {/* All students ranking */}
             <Box mt={5}>
-                <Typography variant="h4">All Students</Typography>
+                <Typography variant="h4" style={{ color: checked ? '#fff' : '' }}>
+                    {t('dashboard.allStudent')}
+                </Typography>
 
                 <Box mt={2}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6} lg={3}>
-                            <Widget title="Student with highest mark">
+                            <Widget title={t('dashboard.highestMark')}>
                                 <StudentRankingList studentList={highestStudentList} />
                             </Widget>
                         </Grid>
 
                         <Grid item xs={12} md={6} lg={3}>
-                            <Widget title="Student with lowest mark">
+                            <Widget title={t('dashboard.lowestMark')}>
                                 <StudentRankingList studentList={lowestStudentList} />
                             </Widget>
                         </Grid>
@@ -102,7 +110,9 @@ export default function Dashboard() {
 
             {/* Rankings By City */}
             <Box mt={5}>
-                <Typography variant="h4">Rankings By City</Typography>
+                <Typography variant="h4" style={{ color: checked ? '#fff' : '' }}>
+                    {t('dashboard.rankingByCity')}
+                </Typography>
 
                 <Box mt={2}>
                     <Grid container spacing={3}>

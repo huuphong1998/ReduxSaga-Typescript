@@ -32,24 +32,29 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export function AdminLayout() {
+export interface AdminLayoutProps {
+    checked?: boolean
+    onChange?: () => void
+}
+
+export function AdminLayout({ checked, onChange }: AdminLayoutProps) {
     const classes = useStyles()
 
     return (
         <Box className={classes.root}>
             <Box className={classes.header}>
-                <Header />
+                <Header checked={checked} onChange={onChange} />
             </Box>
             <Box className={classes.sidebar}>
-                <Sidebar />
+                <Sidebar checked={checked} />
             </Box>
             <Box className={classes.main}>
                 <Switch>
                     <Route path="/admin/dashboard">
-                        <Dashboard />
+                        <Dashboard checked={checked} />
                     </Route>
                     <Route path="/admin/students">
-                        <StudentFeature />
+                        <StudentFeature checked={checked} />
                     </Route>
                 </Switch>
             </Box>

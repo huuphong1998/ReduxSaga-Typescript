@@ -1,23 +1,22 @@
 import { call, delay, fork, put, take } from '@redux-saga/core/effects'
 import { PayloadAction } from '@reduxjs/toolkit'
+import userApi from 'api/userApi'
 import { push } from 'connected-react-router'
+import { ListResponseUser } from 'models'
 import { authActions, LoginPayload } from './authSlice'
 
 function* handleLogin(payload: LoginPayload) {
     try {
         // console.log('Handle login', payload)
-        yield delay(1000)
-        localStorage.setItem('access_token', 'fake_token')
-        yield put(
-            authActions.loginSuccess({
-                id: 1,
-                name: 'Huu Phong',
-            })
-        )
+        const response: ListResponseUser = yield call(userApi.login, payload)
+        console.log(response)
+        yield put(authActions.loginSuccess(response))
+        localStorage.setItem('access_token', response.data.access_token)
         // redirect to admin page
         yield put(push('/admin/dashboard'))
-    } catch (error) {
-        yield put(authActions.loginFailed(error.message))
+    } catch (error: any) {
+        // console.log('error saga', error)
+        yield put(authActions.loginFailed(error))
     }
 }
 function* handleLogout() {
