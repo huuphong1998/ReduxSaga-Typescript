@@ -4,6 +4,7 @@ import { ListResponseUser } from 'models'
 export interface LoginPayload {
     email: string
     password: string
+    confirmedPassword?: string
 }
 
 export interface AuthState {

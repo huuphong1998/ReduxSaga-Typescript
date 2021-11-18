@@ -6,7 +6,7 @@ import { ListResponseUser } from 'models'
 import * as React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { authActions, LoginPayload } from '../authSlice'
-import LoginForm from '../components/LoginForm'
+import RegisterForm from '../components/RegisterForm'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function LoginPage() {
+export default function RegisterPage() {
     const classes = useStyles()
     const dispatch = useAppDispatch()
     const auth = useAuth()
@@ -31,6 +31,7 @@ export default function LoginPage() {
     const initialValues: LoginPayload = {
         email: '',
         password: '',
+        confirmedPassword: '',
     }
 
     // Redux Saga
@@ -46,7 +47,7 @@ export default function LoginPage() {
     // Context
     const handleUserFormSubmit = async (formValues: LoginPayload) => {
         // call API
-        const response: ListResponseUser = await userApi.login(formValues)
+        const response: ListResponseUser = await userApi.register(formValues)
 
         // set login from data API
         auth.handleLogin(response.data.user)
@@ -62,16 +63,16 @@ export default function LoginPage() {
         <div className={classes.root}>
             <Paper elevation={1} className={classes.box}>
                 <Typography variant="h5" component="h1">
-                    Sign In
+                    Sign Up
                 </Typography>
 
                 <Box>
-                    <LoginForm initialValues={initialValues} onSubmit={handleUserFormSubmit} />
+                    <RegisterForm initialValues={initialValues} onSubmit={handleUserFormSubmit} />
                 </Box>
 
                 <Typography variant="h6" component="h6">
-                    Do not have an account?&nbsp;
-                    <Link to="/register">Sign up</Link>
+                    Have an account?&nbsp;
+                    <Link to="/login">Sign In</Link>
                 </Typography>
             </Paper>
         </div>
